@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Bateria01;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class StaticUser extends Controller
 {
