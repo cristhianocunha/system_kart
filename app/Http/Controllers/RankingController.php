@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ranking;
+use App\Models\Ranking;
+use App\Models\Bateria01;
 use Illuminate\Http\Request;
 
-class ranking extends Controller
+class RankingController extends Controller
 
 {
     /**
@@ -14,6 +15,11 @@ class ranking extends Controller
     public function index()
     {
         //
+        $rankings = Ranking::query()->orderBy('pontos', 'desc')
+        ->get();
+        $cont = Ranking::query()->count();
+
+        return view('ranking.index', compact('rankings'));
     }
 
     /**
