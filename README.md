@@ -16,6 +16,9 @@ Esse sistema esta em processo de construção.
 
 * Atualizar melhor volta no ranking geral
 * Melhorar visual do index
+* Adicionar uma logo 
+* Melhora dashboard, mostrando mais sobre o Piloto.
+
 #### Ainda tem outra implementação que podem serem feitas no futuro
 
 ## License
