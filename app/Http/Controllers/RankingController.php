@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ranking;
-use App\Models\Bateria01;
+use App\Jobs\ProcessRanking;
 use Illuminate\Http\Request;
 
 class RankingController extends Controller
@@ -16,9 +16,8 @@ class RankingController extends Controller
     {
         //
         $rankings = Ranking::query()->orderBy('pontos', 'desc')
-        ->get();
+            ->get();
         $cont = Ranking::query()->count();
-
         return view('ranking.index', compact('rankings'));
     }
 

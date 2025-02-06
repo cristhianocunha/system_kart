@@ -33,31 +33,50 @@ class ProcessRanking implements ShouldQueue
         }
         foreach ($baterias as $bateria) {
 
-            $pontos = match ($bateria->pos) {
-                1 => 10,
-                2 => 9,
-                3 => 8,
-                4 => 7,
-                5 => 6,
-                6 => 5,
-                7 => 4,
-                8 => 3,
-                9 => 2,
-                10 => 1,
+            $pontos = match ($bateria->POS) {
+                "1" => 10,
+                "2" => 9,
+                "3" => 8,
+                "4" => 7,
+                "5" => 6,
+                "6" => 5,
+                "7" => 4,
+                "8" => 3,
+                "9" => 2,
+                "10" => 1,
                 default => 0,
             };
+
             $Corredor = Ranking::query()
                 ->where('name', $bateria->name)->first();
+
             if ($Corredor) {
                 $pontos = $Corredor->pontos + $pontos;
-                Ranking::query()->where('name', $bateria->name)->update([
+                $update = Ranking::query()->where('name', $bateria->name)->update([
                     "pontos" => $pontos,
 
                 ]);
-                continue;
+                if ($update) {
+                    Bateria01::query()->where("id", $bateria->id)
+                        ->update([
+                            "update_ranking" => date('Y-m-d H:i:s'),
+                        ]);
+                }
             }
-            if(!$Corredor){
-                // Ranking::
+
+            if (!$Corredor) {
+                $create = Ranking::insert([
+                    'pontos' => $pontos,
+                    'name' => $bateria->name,
+                    'user_id' => $bateria->user_id ?? null,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+                if ($create) {
+                    Bateria01::query()->where("id", $bateria->id)
+                        ->update([
+                            "update_ranking" => date('Y-m-d H:i:s'),
+                        ]);
+                }
             }
         }
     }
