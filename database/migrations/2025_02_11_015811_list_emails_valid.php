@@ -11,17 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ranking', function (Blueprint $table) {
+        Schema::create('ListEmailsValid', function (Blueprint $table) {
             $table->id();  // Chave primária auto-incremento
             
-            $table->integer('pontos');
-            $table->string('name', 50);
+        
+            $table->string('email', 50);
            
-            $table->unsignedBigInteger('user_id'); // Chave estrangeira para users
-            $table->string('TMV', 50)->comment('Formato: HH:MM:SS.sss');
+
            
             $table->timestamps();  // Colunas created_at e updated_at
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+         
         });
     }
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ranking');
+        Schema::dropIfExists('ListEmailsValid');
     }
 };

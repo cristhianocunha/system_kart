@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
-
+use App\Models\ListEmailsValid;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -21,7 +21,20 @@ class CreateNewUser implements CreatesNewUsers
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    $dominiosPermitidos = ListEmailsValid::pluck('email')->toArray();
+                    
+                    if (!in_array($value, $dominiosPermitidos)) {
+                        $fail('O email deve pertencer a lista atualizada.');
+                    }
+                }
+            ],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
