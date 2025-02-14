@@ -15,7 +15,6 @@ class StaticUser extends Controller
             ->selectRaw('MIN(TMV) AS TVM')
             ->where('user_id', $userId)
             ->whereHas('user')
-            ->orderByRaw("POS = 'NC', POS + 0") // Ordena colocando "NC" no final
             ->first();
 
         $corridas = Bateria01::query()

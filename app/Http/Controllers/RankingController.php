@@ -40,9 +40,12 @@ class RankingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ranking $ranking)
+    public function show()
     {
-        //
+        $rankings = Ranking::query()->orderBy('pontos', 'desc')
+            ->get();
+        $cont = Ranking::query()->count();
+        return view('index', compact('rankings'));
     }
 
     /**
@@ -56,9 +59,12 @@ class RankingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ranking $ranking)
+    public function update()
     {
-        //
+        $update = new ProcessRanking;
+        $update->handle();
+        $update->updateTMV();
+        return redirect()->back();
     }
 
     /**

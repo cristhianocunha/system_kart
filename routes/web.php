@@ -20,5 +20,7 @@ Route::middleware([
     Route::get('/dashboard', [StaticUser::class, 'index'])->name('dashboard');
     Route::get('/bateria01/{corrida}', [Bateria01Controller::class, 'index'])->name('bateria01.index');
     Route::get('/ranking', [RankingController::class, 'index'])->name('ranking.index');
+    Route::post('/ranking/update', [RankingController::class, 'update'])->name('ranking.update');
+
 });
 // Route::get('/dashboard', [StaticUser::class, 'StaticUser'])->middleware(['auth'])->name('dashboard');

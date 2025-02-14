@@ -80,4 +80,15 @@ class ProcessRanking implements ShouldQueue
             }
         }
     }
+    public function updateTMV()
+    {
+        $updates = Bateria01::query()
+            ->selectRaw("name, MIN(TMV) AS TVM")
+            ->groupBy('name')
+            ->get()->toArray();
+        foreach ($updates as $update) {
+            Ranking::query()->where('name', $update['name'])
+                ->update(["TMV" => $update['TVM']]);
+        }
+    }
 }
