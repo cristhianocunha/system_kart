@@ -8,5 +8,4 @@ class Ranking extends Model
 {
     protected $table = 'ranking';
    
-
 }
