@@ -11,15 +11,19 @@ Esse sistema esta em processo de construção.
 * Visualizar cada Corridas
 * Ranking geral (Privado e publico)
 * Melhor volta do usuario
+* Atualizar melhor volta no ranking geral
+* Adicionar uma logo 
 
 ### Pontos a serem feitos
 
-* Atualizar melhor volta no ranking geral
 * Melhorar visual do index
-* Adicionar uma logo 
+* Adiciona local para importa dados de nova corrida
 * Melhora dashboard, mostrando mais sobre o Piloto.
 
-#### Ainda tem outra implementação que podem serem feitas no futuro
+### Ideias
+* Criar uma SaaS (Software as a Service).
+
+### Ainda tem outra implementação que podem serem feitas no futuro
 
 ## License
 
