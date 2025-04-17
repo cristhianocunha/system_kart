@@ -24,3 +24,4 @@ yarn-error.log
 *.sql
 *.zip
 /telemetria
+/tmp
