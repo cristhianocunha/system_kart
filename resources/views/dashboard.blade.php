@@ -10,16 +10,16 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                <ul>
+                <select
+                    class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-md shadow-sm"
+                    onchange="window.location.href = this.value">
+                    <option value="">Selecione uma corrida</option>
                     @foreach($corridas as $corrida)
-                    <li>
-                        <a
-                            class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"
-                            href="{{ route('bateria01.index', ['corrida' => $corrida->corrida] ) }}">Corrida {{ $corrida->corrida }}</a>
-                    </li>
-
+                    <option value="{{ route('bateria01.index', ['corrida' => $corrida->corrida] ) }}">
+                        Corrida {{ $corrida->corrida }}
+                    </option>
                     @endforeach
-                </ul>
+                </select>
             </div>
         </div>
     </div>
