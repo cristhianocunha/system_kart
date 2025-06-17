@@ -19,11 +19,11 @@ class StaticUser extends Controller
 
         $corridas = Bateria01::query()
             ->select('corrida')  // Selecione apenas a coluna 'corrida'
-            ->distinct()          // Retorna apenas valores únicos
+            ->orderby('corrida', 'asc')
+            ->distinct()
             ->get();
 
-   
-        // Passa os dados para a view
+    
         return view('dashboard', compact('staticUser', 'corridas'));
     }
 }
