@@ -8,4 +8,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/updaterun', [UpdateRun::class, 'update']);
+
+Route::middleware('auth:sanctum')->post('/updaterun', [UpdateRun::class, 'update']);
+
+// Route::middleware('auth:sanctum')->post('/updaterun', [UpdateRun::class, 'update']);
