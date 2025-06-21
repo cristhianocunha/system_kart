@@ -22,7 +22,7 @@ Route::post('/login', function (Request $request) {
     $token = $user->createToken(
         'api-token',
         ['*'],
-        Carbon::now()->addHours(1) 
+        Carbon::now()->addHours(1)
     )->plainTextToken;
 
     return response()->json(['token' => $token]);
