@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ranking;
+use App\Models\Bateria01;
 use App\Jobs\ProcessRanking;
 use Illuminate\Http\Request;
 
@@ -72,6 +73,19 @@ class RankingController extends Controller
      */
     public function destroy(ranking $ranking)
     {
-        //
+        try {
+            $ranking::truncate();
+            Bateria01::query()->update(["update_ranking" => null]);
+
+            return redirect()->back()->with('status', [
+                'type' => 'success',
+                'message' => 'Tabela limpa com sucesso!'
+            ]);
+        } catch (\Exception $e) {
+            return back()->with('status', [
+                'type' => 'danger',
+                'message' => 'Erro ao limpar tabela: ' . $e->getMessage()
+            ]);
+        }
     }
 }

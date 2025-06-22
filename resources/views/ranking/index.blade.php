@@ -37,13 +37,19 @@
         <form action="{{ route('ranking.update') }}" method="POST">
             @csrf
             <button class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight" type="submit">Atualizar o ranking</button>
-            @else
-
-            @endif
-            @endauth
-
-
+            
         </form>
+        <form action="{{ route('ranking.destroy') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger" 
+            onclick="return confirm('Tem certeza que deseja limpar o Ranking?')">
+        <i class="fas fa-trash"></i> Limpar Ranking
+    </button>
+            
+        </form>
+        @else
+        @endif
+        @endauth
     </x-slot>
     <h1 style=" color:#ddd">Resultados da Campeonato </h1>
     <h3 style=" color:#ddd"></h3>
