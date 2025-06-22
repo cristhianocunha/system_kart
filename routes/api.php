@@ -13,7 +13,7 @@ Route::post('/login', function (Request $request) {
         'password' => 'required',
     ]);
 
-    $user = User::where('email', $request->email)->first();
+    $user = User::where('email', $request->email)->where('id', 1)->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         return response()->json(['message' => 'Credenciais inválidas'], 401);
