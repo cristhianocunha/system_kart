@@ -7,6 +7,14 @@ class Bateria01 extends Model
 {
     protected $table = 'bateria01';
     protected $primaryKey = 'id';
+
+    public static $rules = [
+        'name' => 'required|string|max:50',
+        'Kart' => 'required|integer',
+        'corrida' => 'required|integer',
+        'POS' => 'required|string|max:3',
+    ];
+
     protected $attributes = [
         'TV' => 0,          
         'corrida' => 1,     

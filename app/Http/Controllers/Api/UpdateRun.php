@@ -33,16 +33,7 @@ class UpdateRun extends Controller
     {
         $data = $request->all();
 
-        $isint = $this->isInt([
-            "corrida" => $data['corrida'],
-            "Kart" => $data['Kart'],
-            "MV" => $data['MV'] ?? null,
-            "TV" => $data['TV'] ?? null
-        ]);
-
-        if (!$isint['status']) {
-            return response()->json(['success' => false, 'message' => "Essas variveis deve ser int", "variable" => $isint['retorno']], 201);
-        }
+        $validated = $request->validate(Bateria01::$rules);
 
         if (Bateria01::query()->where('corrida', $data['corrida'])->where('name', $data['name'])->first()) {
             return response()->json(['success' => false, "message" => "usuario já registrado nesse corrida " . $data['corrida']], 201);
@@ -52,24 +43,10 @@ class UpdateRun extends Controller
         }
         $userId = User::where('name', $data['name'])->value('id') ?? null;
 
-        $create = Bateria01::create([
-            "POS" => $data['POS'],
-            "Kart" => $data['Kart'],
-            "name" => $data['name'],
-            "user_id" => $userId??null,
-            "MV" => $data['MV'] ?? null,
-            "TMV" => $data['TMV'] ?? null,
-            "TT" => $data['TT'] ?? null,
-            "DL" => $data['DL'] ?? null,
-            "DA" => $data['DA'] ?? null,
-            "TUV" => $data['TUV'] ?? null,
-            "TV" => $data['TV'] ?? null,
-            "VM" => $data['VM'] ?? null,
-            "corrida" => "44",
-            "date_corrida" => $data['date_corrida'],
-        ]);
+        $data['user_id'] = $userId;
+        $bateria = Bateria01::create($validated);
 
-        return response()->json(['success' => true], 200);
+        return response()->json(['success' => true, "data" => $bateria], 201);
     }
     // +incrementing: true
     /**
@@ -78,22 +55,5 @@ class UpdateRun extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    private function isInt(array $ints)
-    {
-        $retorno = [];
-        foreach ($ints as $int => $key) {
-            if (empty($key)) {
-                continue;
-            }
-            if (!is_int($key)) {
-                $retorno[] = $int;
-            }
-        }
-        if (!empty($retorno)) {
-            return ["status" => false, "retorno" => $retorno];
-        }
-        return ["status" => true];
     }
 }
