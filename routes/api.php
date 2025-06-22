@@ -33,6 +33,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::middleware('auth:sanctum')->post('/updaterun', [UpdateRun::class, 'update']);
+Route::middleware('auth:sanctum')->post('/createrun', [UpdateRun::class, 'store']);
+
+Route::middleware('auth:sanctum')->post('/updatepos/{corrida}', [UpdateRun::class, 'updatePos']);
 
 // Route::middleware('auth:sanctum')->post('/updaterun', [UpdateRun::class, 'update']);
