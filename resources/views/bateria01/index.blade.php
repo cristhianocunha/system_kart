@@ -29,12 +29,27 @@
         </style>
     </head>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Minha Página
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                Corrida {{ $corrida }} — {{ $data_corrida }}
+            </h2>
+            @auth
+            @if(Auth::user()->isAdmin())
+            <form action="{{ route('bateria01.destroy', $corrida) }}" method="POST"
+                  onsubmit="return confirm('Tem certeza que deseja remover a Corrida {{ $corrida }}? O ranking será recalculado.')">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-md shadow transition">
+                    Remover Corrida
+                </button>
+            </form>
+            @endif
+            @endauth
+        </div>
     </x-slot>
-    <h1 style=" color:#ddd">Resultados da Corrida {{ $corrida }} </h1>
-    <h3 style=" color:#ddd">Data: {{ $data_corrida }} 19:33:40</h3>
+    <h1 style="color:#ddd">Resultados da Corrida {{ $corrida }}</h1>
+    <h3 style="color:#ddd">Data: {{ $data_corrida }}</h3>
 
     <table>
         <thead>

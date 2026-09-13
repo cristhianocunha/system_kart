@@ -27,9 +27,13 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'pilot_name',
         'email',
         'password',
         'user_id',
+        'is_admin',
+        'must_change_password',
+        'team_id',
     ];
 
     /**
@@ -63,6 +67,28 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin'             => 'boolean',
+            'must_change_password' => 'boolean',
         ];
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->is_admin && !$this->team_id;
+    }
+
+    public function isTeamAdmin(): bool
+    {
+        return $this->is_admin && (bool) $this->team_id;
     }
 }

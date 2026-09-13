@@ -4,87 +4,75 @@ namespace App\Http\Controllers;
 
 use App\Models\Ranking;
 use App\Models\Bateria01;
+use App\Models\Team;
 use App\Jobs\ProcessRanking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RankingController extends Controller
-
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-        $rankings = Ranking::query()->orderBy('pontos', 'desc')
+        $user = Auth::user();
+        $teamId = $user->isSuperAdmin() ? request('team') : $user->team_id;
+        $team = $teamId ? Team::find($teamId) : null;
+
+        $rankings = Ranking::query()
+            ->where('team_id', $teamId)
+            ->orderBy('pontos', 'desc')
             ->get();
-        $cont = Ranking::query()->count();
-        return view('ranking.index', compact('rankings'));
+
+        return view('ranking.index', compact('rankings', 'team'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function showTeam(string $slug)
     {
-        //
+        $team = Team::where('slug', $slug)->firstOrFail();
+
+        $rankings = Ranking::where('team_id', $team->id)
+            ->orderBy('pontos', 'desc')
+            ->get();
+
+        return view('index', compact('rankings', 'team'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show()
     {
-        $rankings = Ranking::query()->orderBy('pontos', 'desc')
-            ->get();
-        $cont = Ranking::query()->count();
-        return view('index', compact('rankings'));
+        $teams = Team::orderBy('name')->get();
+        $rankings = collect();
+
+        return view('index', compact('rankings', 'teams'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ranking $ranking)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update()
     {
-        $update = new ProcessRanking;
+        $user = Auth::user();
+        $teamId = $user->isSuperAdmin() ? request('team') : $user->team_id;
+
+        $update = new ProcessRanking($teamId);
         $update->handle();
         $update->updateTMV();
+
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ranking $ranking)
+    public function destroy(Ranking $ranking)
     {
+        $user = Auth::user();
+        $teamId = $user->isSuperAdmin() ? request('team') : $user->team_id;
+
         try {
-            $ranking::truncate();
-            Bateria01::query()->update(["update_ranking" => null]);
+            Ranking::where('team_id', $teamId)->delete();
+            Bateria01::where('team_id', $teamId)->update(['update_ranking' => null]);
 
             return redirect()->back()->with('status', [
-                'type' => 'success',
-                'message' => 'Tabela limpa com sucesso!'
+                'type'    => 'success',
+                'message' => 'Ranking limpo com sucesso!',
             ]);
         } catch (\Exception $e) {
             return back()->with('status', [
-                'type' => 'danger',
-                'message' => 'Erro ao limpar tabela: ' . $e->getMessage()
+                'type'    => 'danger',
+                'message' => 'Erro ao limpar ranking: ' . $e->getMessage(),
             ]);
         }
     }

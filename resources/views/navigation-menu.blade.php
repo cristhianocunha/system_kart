@@ -15,6 +15,21 @@
                     <x-nav-link href="{{ route('ranking.index') }}" :active="request()->routeIs('ranking.index')">
                         {{ __('Ranking Geral') }}
                     </x-nav-link>
+                    @if(Auth::user()->isSuperAdmin())
+                    <x-nav-link href="{{ route('admin.teams.index') }}" :active="request()->routeIs('admin.teams.*')">
+                        {{ __('Equipes') }}
+                    </x-nav-link>
+                    @endif
+                    @if(Auth::user()->isTeamAdmin())
+                    <x-nav-link href="{{ route('corrida.import') }}" :active="request()->routeIs('corrida.import')">
+                        {{ __('Importar Corrida') }}
+                    </x-nav-link>
+                    @endif
+                    @if(Auth::user()->isAdmin())
+                    <x-nav-link href="{{ route('admin.members.index') }}" :active="request()->routeIs('admin.members.*')">
+                        {{ __('Membros') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -145,6 +160,21 @@
             <x-responsive-nav-link href="{{ route('ranking.index') }}" :active="request()->routeIs('ranking.index')">
                 {{ __('Ranking Geral') }}
             </x-responsive-nav-link>
+            @if(Auth::user()->isSuperAdmin())
+            <x-responsive-nav-link href="{{ route('admin.teams.index') }}" :active="request()->routeIs('admin.teams.*')">
+                {{ __('Equipes') }}
+            </x-responsive-nav-link>
+            @endif
+            @if(Auth::user()->isTeamAdmin())
+            <x-responsive-nav-link href="{{ route('corrida.import') }}" :active="request()->routeIs('corrida.import')">
+                {{ __('Importar Corrida') }}
+            </x-responsive-nav-link>
+            @endif
+            @if(Auth::user()->isAdmin())
+            <x-responsive-nav-link href="{{ route('admin.members.index') }}" :active="request()->routeIs('admin.members.*')">
+                {{ __('Membros') }}
+            </x-responsive-nav-link>
+            @endif
 
 
         </div>

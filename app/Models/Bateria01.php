@@ -44,6 +44,7 @@ class Bateria01 extends Model
         'Kart',
         'name',
         'user_id',
+        'team_id',
         'MV',
         'TMV',
         'TT',
@@ -54,12 +55,16 @@ class Bateria01 extends Model
         'VM',
         'corrida',
         'date_corrida',
-        'update_ranking'
+        'update_ranking',
     ];
 
-    // Relação: Um registro da Bateria03 pertence a um usuário
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 }

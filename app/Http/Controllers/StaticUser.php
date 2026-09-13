@@ -9,21 +9,25 @@ class StaticUser extends Controller
 {
     public function index()
     {
-        $userId = Auth::user()->id;
-       
-        $staticUser = Bateria01::with('user')
-            ->selectRaw('MIN(TMV) AS TVM')
-            ->where('user_id', $userId)
-            ->whereHas('user')
+        $user = Auth::user();
+
+        $staticUser = Bateria01::selectRaw('MIN(TMV) AS TVM')
+            ->where('team_id', $user->team_id)
+            ->where(function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+                if ($user->pilot_name) {
+                    $q->orWhere('name', $user->pilot_name);
+                }
+            })
             ->first();
 
         $corridas = Bateria01::query()
-            ->select('corrida')  
-            ->orderby('corrida', 'asc')
+            ->select('corrida')
+            ->where('team_id', $user->team_id)
+            ->orderBy('corrida', 'asc')
             ->distinct()
             ->get();
 
-    
         return view('dashboard', compact('staticUser', 'corridas'));
     }
 }

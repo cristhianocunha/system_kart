@@ -10,8 +10,14 @@
             @csrf
 
             <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                <x-label for="team_name" value="Nome do Kartódromo / Equipe" />
+                <x-input id="team_name" class="block mt-1 w-full" type="text" name="team_name" :value="old('team_name')" required autofocus placeholder="Ex: Kartódromo São Paulo" />
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Você será o administrador desta equipe.</p>
+            </div>
+
+            <div class="mt-4">
+                <x-label for="name" value="Seu nome" />
+                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autocomplete="name" />
             </div>
 
             <div class="mt-4">
